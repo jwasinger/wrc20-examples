@@ -1,0 +1,8 @@
+wrc20_C:
+  file: "build/wrc20-c.wasm"
+  remapimports:
+    preset: "ewasm"
+wrc20_C2:
+  file: "build/wrc20-c2.wasm"
+  remapimports:
+    preset: "ewasm"

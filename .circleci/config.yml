@@ -1,0 +1,26 @@
+defaults:
+    create_build_dir: &create_build_dir
+        run:
+            name: "create buikld directory"
+            command: |
+                mkdir build
+
+    build_c_example: &build_c_example
+        run:
+            name: "Build C Example"
+            command: |
+                docker run -v $(pwd):/c_src -t jwasinger/clang-7 bash -c "cd /c_src && make"
+                cp C/wrc20.wasm build/wrc20-C.wasm
+
+    chisel: &chisel
+                docker run -v $(pwd)/build:/build -v $(pwd)/chisel/chisel.yml:/chisel.yml -t jwasinger/wasm-chisel chisel run
+
+version: 2
+jobs:
+    build:
+        machine: true
+        steps:
+            - *create_build_dir
+            - *build_c_example
+            - *chisel_contracts
+            - 
