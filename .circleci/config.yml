@@ -42,6 +42,6 @@ jobs:
             - checkout
             - *create_build_dir
             - *build_c_example
-            - *chisel
+            # - *chisel
             - *testgen
             - *run_tests
