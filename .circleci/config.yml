@@ -3,11 +3,10 @@ defaults:
         run:
             name: "create buikld directory"
             command: |
-                ls 
                 mkdir build
                 cd build
                 git clone https://github.com/ewasm/tests
-                cd ..
+                mkdir wasm
 
     build_c_example: &build_c_example
         run:
