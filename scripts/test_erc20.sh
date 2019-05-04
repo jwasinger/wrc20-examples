@@ -9,4 +9,4 @@ cd ..
 
 echo "$(docker ps)"
 echo "$(netstat -tulpn)"
-docker run --network host -v $(pwd)/truffle:/project -t jwasinger/truffle sh -c "cd /project && mkdir tmp && cd tmp && truffle unbox metacoin && cp ../truffle-config.js metacoin/ && truffle migrate --network dev && truffle test --network dev"
+docker run --network host -v $(pwd)/truffle:/project -t jwasinger/truffle sh -c "cd /project && mkdir tmp && cd tmp && truffle unbox metacoin && cp ../truffle-config.js . && truffle migrate --network dev && truffle test --network dev"
