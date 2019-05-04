@@ -26,7 +26,7 @@ defaults:
         run:
             name: "run tests with truffle"
             command: |
-                bash bash scripts/test_erc20.sh
+                bash scripts/test_erc20.sh
 
 version: 2
 jobs:
