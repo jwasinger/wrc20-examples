@@ -37,3 +37,4 @@ jobs:
             - *create_build_dir
             - *build_c_example
             - *chisel
+            - *truffle
