@@ -11,7 +11,7 @@ docker run -d --network host -v $(pwd)/data:/data -v $(pwd)/keys:/keys -t jwasin
 	--datadir /data \
 	--unlock $(cat keys/faucet/faucet-addr.txt) \
 	--rpc \
-	--rpcaddr '0.0.0.0' \
+	--rpcaddr '127.0.0.1' \
 	--rpcport 8545 \
 	--rpccorsdomain '*' \
 	--ws \
