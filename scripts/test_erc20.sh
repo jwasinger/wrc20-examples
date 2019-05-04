@@ -3,6 +3,7 @@
 set -e
 
 cd ci 
+bash init_geth.sh
 geth_container=$(bash run.sh)
 cd ..
 
