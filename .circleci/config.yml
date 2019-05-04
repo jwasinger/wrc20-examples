@@ -4,23 +4,36 @@ defaults:
             name: "create buikld directory"
             command: |
                 mkdir build
+                cd build
+                git clone https://github.com/ewasm/tests
+                mkdir wasm
 
     build_c_example: &build_c_example
         run:
             name: "Build C Example"
             command: |
-                docker run -v $(pwd):/c_src -t jwasinger/clang-7 bash -c "cd /c_src && make"
-                cp C/wrc20.wasm build/wrc20-C.wasm
+                ls 
+                docker run -v $(pwd)/src/C:/C -t jwasinger/clang-7 bash -c "cd /C && make"
+                cp src/C/wrc20.wasm build/wasm/c.wasm
 
     chisel: &chisel
-                docker run -v $(pwd)/build:/build -v $(pwd)/chisel/chisel.yml:/chisel.yml -t jwasinger/wasm-chisel chisel run
+        run:
+            name: "chisel contracts"
+            command: |
+                docker run -v $(pwd)/build:/build -v $(pwd)/chisel/chisel.yml:/chisel.yml -t jwasinger/wasm-chisel run
+
+    truffle: &truffle
+        run:
+            name: "run tests with truffle"
+            command: |
+                bash bash scripts/test_erc20.sh
 
 version: 2
 jobs:
     build:
         machine: true
         steps:
+            - checkout
             - *create_build_dir
             - *build_c_example
-            - *chisel_contracts
-            - 
+            - *chisel

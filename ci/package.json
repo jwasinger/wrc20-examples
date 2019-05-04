@@ -1,0 +1,25 @@
+{
+  "name": "geth-docker-example",
+  "version": "1.0.0",
+  "description": "### Usage * Have Docker installed * Invoke `init_geth.sh` and then `run.sh` to start the client",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jwasinger/geth-docker-example.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jwasinger/geth-docker-example/issues"
+  },
+  "homepage": "https://github.com/jwasinger/geth-docker-example#readme",
+  "dependencies": {
+    "chai": "^4.2.0",
+    "openzeppelin-solidity": "^2.2.0",
+    "openzeppelin-test-helpers": "^0.3.2",
+    "web3": "^1.0.0-beta.53"
+  }
+}
