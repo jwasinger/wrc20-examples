@@ -6,4 +6,4 @@ cd ci
 geth_container=$(bash run.sh)
 cd ..
 
-sleep 40s
+docker run --network host -v $(pwd)/truffle:/project -t jwasinger/truffle sh -c "cd /project && npm install --unsafe-perm && truffle test --network dev"
