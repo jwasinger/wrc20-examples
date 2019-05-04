@@ -34,7 +34,7 @@ jobs:
         machine: true
         steps:
             - checkout
-            - *create_build_dir
-            - *build_c_example
-            - *chisel
+              #$- *create_build_dir
+              #- *build_c_example
+              #- *chisel
             - *truffle
