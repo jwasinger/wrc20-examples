@@ -1,7 +1,7 @@
 #! /bin/bash
 set -e
 
-docker run -d -v $(pwd)/data:/data -v $(pwd)/keys:/keys -p 8545:8545 -p 8546:8546 -p 30303:30303/udp -t jwasinger/client-go:ewasm \
+docker run -d --network host -v $(pwd)/data:/data -v $(pwd)/keys:/keys -t jwasinger/client-go:ewasm \
 	--etherbase $(cat keys/faucet/faucet-addr.txt) \
 	--mine \
 	--miner.threads 1 \
