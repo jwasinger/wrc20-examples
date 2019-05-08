@@ -4,7 +4,7 @@ const { ZERO_ADDRESS } = constants;
 
 const ERC20Mock = artifacts.require('WRC20');
 
-contract('ERC20', function ([_, initialHolder, recipient, anotherAccount]) {
+contract('WRC20', function ([_, initialHolder, recipient, anotherAccount]) {
   const initialSupply = new BN(100);
   beforeEach(async function () {
     this.token = await ERC20Mock.new(initialHolder, initialSupply);

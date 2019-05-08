@@ -1,7 +1,7 @@
 #! /bin/bash
 set -e
 
-docker run -d --network host -v $(pwd)/data:/data -v $(pwd)/keys:/keys -t jwasinger/client-go:ewasm \
+docker run -d --network host -v $(pwd)/data:/data -v $(pwd)/keys:/keys -t jwasinger/client-go:ewasm-hera \
 	--etherbase $(cat keys/faucet/faucet-addr.txt) \
 	--mine \
 	--miner.threads 1 \
@@ -18,4 +18,4 @@ docker run -d --network host -v $(pwd)/data:/data -v $(pwd)/keys:/keys -t jwasin
 	--wsaddr '0.0.0.0' \
 	--wsorigins '*' \
 	--password /keys/faucet/faucet-pw.txt \
-	--vm.ewasm="$(pwd)/libhera.so,fallback=true,metering=true"
+	--vm.ewasm="/home/builder/libhera.so,fallback=true,metering=false"

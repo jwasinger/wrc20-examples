@@ -7,6 +7,4 @@ bash init_geth.sh
 geth_container=$(bash run.sh)
 cd ..
 
-echo "$(docker ps)"
-echo "$(netstat -tulpn)"
-docker run --network host -v $(pwd)/truffle:/project -t jwasinger/truffle sh -c "cd /project && mkdir tmp && cd tmp && truffle unbox metacoin && cp ../truffle-config.js . && npm install && truffle migrate --network dev && truffle test --network dev"
+docker run --network host -v $(pwd)/src/C/wrc20.wasm:/build/wrc20.wasm -v $(pwd)/truffle:/project -t jwasinger/truffle sh -c "cd /project && mkdir tmp && cd tmp && truffle unbox metacoin && cp ../truffle-config.js . && npm install && truffle migrate --network dev && node deploy-contract.js --wasm /build/wrc20.wasm && truffle test --network dev"
