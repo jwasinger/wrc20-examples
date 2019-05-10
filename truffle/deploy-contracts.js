@@ -4,6 +4,7 @@ const privateKey = Buffer.from('cbfee4ca4db6cf6120e50eff7033ed6c65168ae4bd93bb66
 const argv = require('yargs').argv;
 const fs = require('fs')
 const binaryen = require("binaryen");
+const request = require('request');
 
 const web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8545'));
 
@@ -51,7 +52,38 @@ let tx = new EthereumTx(txParams)
 tx.sign(privateKey)
 let serializedTx = tx.serialize()
 
+var options = {
+  url: 'http://localhost:8545',
+  method: 'POST',
+  json: {
+    jsonrpc: "2.0",
+    method: "eth_sendRawTransaction",
+    id: 1,
+    params: [
+      serializedTx
+    ]
+  }
+};
+
+request(options, function (error, response, body) {
+  if (error) {
+    console.log("error: ")
+    console.log(error)
+  }
+
+  if (!error && response.statusCode == 200) {
+    console.log(body) // Print the shortened url.
+  }
+});
+
+/*
+console.log("sending signed transaction...")
 web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex'))
 	.on('receipt', function(receipt) {
+		console.log("got receipt")
 		createTruffleConf(receipt, wasmBytecode);
+	})
+	.on('error', function(err) {
+		console.log(err)
 	});
+*/

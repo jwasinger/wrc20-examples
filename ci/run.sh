@@ -18,4 +18,4 @@ docker run -d --network host -v $(pwd)/data:/data -v $(pwd)/keys:/keys -t jwasin
 	--wsaddr '0.0.0.0' \
 	--wsorigins '*' \
 	--password /keys/faucet/faucet-pw.txt \
-	--vm.ewasm="/home/builder/libhera.so,fallback=true,metering=false"
+	--vm.ewasm="/root/libhera.so,fallback=true,metering=false"

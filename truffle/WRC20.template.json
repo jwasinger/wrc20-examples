@@ -1,5 +1,5 @@
 {
-  "contractName": "ERC20",
+  "contractName": "WRC20",
   "abi": [
     {
       "anonymous": false,
@@ -24,28 +24,6 @@
       "type": "event"
     },
     {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "name": "owner",
-          "type": "address"
-        },
-        {
-          "indexed": true,
-          "name": "spender",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "name": "value",
-          "type": "uint256"
-        }
-      ],
-      "name": "Approval",
-      "type": "event"
-    },
-    {
       "constant": true,
       "inputs": [],
       "name": "totalSupply",
@@ -67,13 +45,27 @@
           "type": "address"
         }
       ],
-      "name": "balanceOf",
+      "name": "balance",
       "outputs": [
         {
           "name": "",
           "type": "uint256"
         }
       ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "init",
+      "outputs": [],
       "payable": false,
       "stateMutability": "view",
       "type": "function"
