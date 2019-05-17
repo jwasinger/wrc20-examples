@@ -22,6 +22,8 @@
     "openzeppelin-solidity": "^2.2.0",
     "openzeppelin-test-helpers": "^0.3.2",
     "request": "^2.88.0",
+    "tmp": "^0.1.0",
+    "wabt": "git+https://github.com/AssemblyScript/wabt.js.git",
     "web3": "^1.0.0-beta.53",
     "yargs": "^13.2.2"
   }

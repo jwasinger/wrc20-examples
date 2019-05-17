@@ -17,19 +17,19 @@ typedef uint32_t i32ptr; // same as i32 in WebAssembly, but treated as a pointer
 typedef uint64_t i64; // same as i64 in WebAssembly
 
 // functions for ethereum stuff
-void useGas(i64 amount);
-void getCaller(i32ptr* resultOffset);
+void ethereum_useGas(i64 amount);
+void ethereum_getCaller(i32ptr* resultOffset);
    // memory offset to load the address into (address)
-i32 getCallDataSize();
-void callDataCopy(i32ptr* resultOffset, i32 dataOffset, i32 length);
+i32 ethereum_getCallDataSize();
+void ethereum_callDataCopy(i32ptr* resultOffset, i32 dataOffset, i32 length);
    // memory offset to load data into (bytes), the offset in the input data, the length of data to copy
-void revert(i32ptr* dataOffset, i32 dataLength);
-void finish(i32ptr* dataOffset, i32 dataLength);
-void storageStore(i32ptr* pathOffset, i32ptr* resultOffset);
-void storageLoad(i32ptr* pathOffset, i32ptr* resultOffset);
+void ethereum_revert(i32ptr* dataOffset, i32 dataLength);
+void ethereum_finish(i32ptr* dataOffset, i32 dataLength);
+void ethereum_storageStore(i32ptr* pathOffset, i32ptr* resultOffset);
+void ethereum_storageLoad(i32ptr* pathOffset, i32ptr* resultOffset);
    //the memory offset to load the path from (bytes32), the memory offset to store/load the result at (bytes32)
-void printMemHex(i32ptr* offset, i32 length);
-void printStorageHex(i32ptr* key);
+void ethereum_printMemHex(i32ptr* offset, i32 length);
+void ethereum_printStorageHex(i32ptr* key);
 
 
 i64 reverse_bytes(i64 a){
@@ -51,17 +51,17 @@ bytes32 addy[1] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 bytes32 balance[1] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 void do_balance() {
-  if (getCallDataSize() != 24)
-    revert(0, 0);
+  if (ethereum_getCallDataSize() != 24)
+    ethereum_revert(0, 0);
 
   // get address to check balance of, note: padded to 32 bytes since used as key
-  callDataCopy((i32ptr*)addy, 4, 20);
+  ethereum_callDataCopy((i32ptr*)addy, 4, 20);
 
   // get balance
-  storageLoad((i32ptr*)addy, (i32ptr*)balance);
+  ethereum_storageLoad((i32ptr*)addy, (i32ptr*)balance);
 
   // return balance
-  finish((i32ptr*)balance, 32);
+  ethereum_finish((i32ptr*)balance, 32);
 }
 
 
@@ -73,28 +73,28 @@ bytes32 recipient_balance[1] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 bytes32 sender_balance[1] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 void do_transfer() {
-  if (getCallDataSize() != 32)
-    revert(0, 0);
+  if (ethereum_getCallDataSize() != 32)
+    ethereum_revert(0, 0);
 
   // get caller
-  getCaller((i32ptr*)sender);
+  ethereum_getCaller((i32ptr*)sender);
 
   // get recipient from message at byte 4, length 20
-  callDataCopy((i32ptr*)recipient, 4, 20);
+  ethereum_callDataCopy((i32ptr*)recipient, 4, 20);
 
   // get amount to transfer from message at byte 24, length 8
-  callDataCopy((i32ptr*)value, 24, 8);
+  ethereum_callDataCopy((i32ptr*)value, 24, 8);
   *(i64*)value = reverse_bytes(*(i64*)value);
 
   // get balances
-  storageLoad((i32ptr*)sender, (i32ptr*)sender_balance);
-  storageLoad((i32ptr*)recipient, (i32ptr*)recipient_balance);
+  ethereum_storageLoad((i32ptr*)sender, (i32ptr*)sender_balance);
+  ethereum_storageLoad((i32ptr*)recipient, (i32ptr*)recipient_balance);
   *(i64*)sender_balance = reverse_bytes(*(i64*)sender_balance);
   *(i64*)recipient_balance = reverse_bytes(*(i64*)recipient_balance);
 
   // make sure sender has enough
   if (*(i64*)sender_balance < *(i64*)value)
-    revert(0, 0);
+    ethereum_revert(0, 0);
 
   // adjust balances
   * (i64*)sender_balance -= * (i64*)value;
@@ -103,8 +103,8 @@ void do_transfer() {
   // store results
   *(i64*)sender_balance = reverse_bytes(*(i64*)sender_balance);
   *(i64*)recipient_balance = reverse_bytes(*(i64*)recipient_balance);
-  storageStore((i32ptr*)sender, (i32ptr*)sender_balance);
-  storageStore((i32ptr*)recipient, (i32ptr*)recipient_balance);
+  ethereum_storageStore((i32ptr*)sender, (i32ptr*)sender_balance);
+  ethereum_storageStore((i32ptr*)recipient, (i32ptr*)recipient_balance);
 
 }
 
@@ -113,11 +113,11 @@ void do_transfer() {
 i32 selector[1] = {0};
 
 void _main(void) {
-  if (getCallDataSize() < 4)
-    revert(0, 0);
+  if (ethereum_getCallDataSize() < 4)
+    ethereum_revert(0, 0);
 
   // get first four bytes of message, use for calling
-  callDataCopy((i32ptr*)selector, 0, 4); //from byte 0, length 4
+  ethereum_callDataCopy((i32ptr*)selector, 0, 4); //from byte 0, length 4
 
   // call function based on selector value
   switch (*selector) {
@@ -128,6 +128,6 @@ void _main(void) {
       do_transfer();
       break;
     default:
-      revert(0, 0);
+      ethereum_revert(0, 0);
   }
 }

@@ -18,8 +18,9 @@ contract('WRC20', function ([_, initialHolder, recipient, anotherAccount]) {
 
   it('Should be able to "mint" balance for initial owner', () => {
     //assert.ok(instanceA, 'Contract should be deployed');
-    instanceA.init(ZERO_ADDRESS, 1000);
-
-    console.log(instanceA.balance(ZERO_ADDRESS))
+    //instanceA.balance(WRC20Address);//.should.be.bignumber.equal('0');
+    return instanceA.balance.call(WRC20Address).then(res => {
+      console.log(res)
+    })
   });
 });

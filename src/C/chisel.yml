@@ -1,0 +1,9 @@
+wrc20_C:
+  file: "wrc20.wasm"
+  output: "wrc20-output.wasm"
+  remapimports:
+    preset: "ewasm"
+  trimexports:
+    preset: "ewasm"
+  verifyexports:
+    preset: "ewasm" 
