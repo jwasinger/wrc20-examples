@@ -7,7 +7,7 @@ bash init_geth.sh
 geth_container=$(bash run.sh)
 cd ..
 
-#docker run -v $(pwd)/truffle:/truffle:z -t jwasinger/truffle sh -c "cd /truffle && npm install"
+docker run -v $(pwd)/truffle:/truffle:z -t jwasinger/truffle sh -c "cd /truffle && npm install"
 
 for filename in build/*.wasm; do
     [ -e "$filename" ] || continue
