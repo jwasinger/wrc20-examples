@@ -4,17 +4,14 @@ defaults:
             name: "create buikld directory"
             command: |
                 mkdir build
-                cd build
-                git clone https://github.com/ewasm/tests
-                mkdir wasm
 
     build_c_example: &build_c_example
         run:
             name: "Build C Example"
             command: |
-                ls 
-                docker run -v $(pwd)/src/C:/C -t jwasinger/clang-7 bash -c "cd /C && make"
-                cp src/C/wrc20.wasm build/wasm/c.wasm
+                # docker run -v $(pwd)/src/C:/C -t jwasinger/clang-7 bash -c "cd /C && make"
+                # C contracts need remap-exports support in chisel so skip the build for now
+                cp src/C/wrc20.wasm build/c.wasm
 
     chisel: &chisel
         run:
@@ -34,7 +31,7 @@ jobs:
         machine: true
         steps:
             - checkout
-              #$- *create_build_dir
-              #- *build_c_example
-              #- *chisel
+            - *create_build_dir
+            - *build_c_example
+            # - *chisel
             - *truffle
