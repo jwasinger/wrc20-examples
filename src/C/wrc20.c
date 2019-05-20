@@ -28,8 +28,7 @@ void ethereum_finish(i32ptr* dataOffset, i32 dataLength);
 void ethereum_storageStore(i32ptr* pathOffset, i32ptr* resultOffset);
 void ethereum_storageLoad(i32ptr* pathOffset, i32ptr* resultOffset);
    //the memory offset to load the path from (bytes32), the memory offset to store/load the result at (bytes32)
-void ethereum_printMemHex(i32ptr* offset, i32 length);
-void ethereum_printStorageHex(i32ptr* key);
+void debug_printMemHex(i32ptr* offset, i32 length);
 
 
 i64 reverse_bytes(i64 a){
@@ -51,11 +50,15 @@ bytes32 addy[1] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 bytes32 balance[1] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 void do_balance() {
-  if (ethereum_getCallDataSize() != 24)
+  /*
+  if (ethereum_getCallDataSize() != 36)
     ethereum_revert(0, 0);
+    */
 
   // get address to check balance of, note: padded to 32 bytes since used as key
-  ethereum_callDataCopy((i32ptr*)addy, 4, 20);
+  ethereum_callDataCopy((i32ptr*)addy, 16, 20);
+
+  debug_printMemHex((i32ptr*)addy, 20);
 
   // get balance
   ethereum_storageLoad((i32ptr*)addy, (i32ptr*)balance);
@@ -111,6 +114,7 @@ void do_transfer() {
 
 // global data used in next function, will be allocated to WebAssembly memory
 i32 selector[1] = {0};
+const i32 balance_selector = 0xd770d6e3;
 
 void _main(void) {
   if (ethereum_getCallDataSize() < 4)
@@ -119,12 +123,15 @@ void _main(void) {
   // get first four bytes of message, use for calling
   ethereum_callDataCopy((i32ptr*)selector, 0, 4); //from byte 0, length 4
 
+  debug_printMemHex(selector, 4);
+  debug_printMemHex(&balance_selector, 4);
+
   // call function based on selector value
   switch (*selector) {
-    case 0x1a029399:
+    case balance_selector:
       do_balance();
       break;
-    case 0xbd9f355d:
+    case 0x5d359fbd:
       do_transfer();
       break;
     default:

@@ -6,5 +6,4 @@ ethereum_revert
 ethereum_finish
 ethereum_storageStore
 ethereum_storageLoad
-ethereum_printMemHex
-ethereum_printStorageHex
+debug_printMemHex

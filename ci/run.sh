@@ -1,13 +1,13 @@
 #! /bin/bash
 set -e
 
-docker run -d --network host -v $(pwd)/data:/data -v $(pwd)/keys:/keys -t jwasinger/client-go:ewasm-hera \
+docker run -d --network host -v $(pwd)/.ethash:/root/.ethash:Z -v $(pwd)/data:/data -v $(pwd)/keys:/keys -t jwasinger/client-go:ewasm-hera \
 	--etherbase $(cat keys/faucet/faucet-addr.txt) \
 	--mine \
 	--miner.threads 1 \
 	--networkid 66 \
 	--nodiscover \
-	--vmodule "miner=12" \
+	--vmodule "rpc=12" \
 	--datadir /data \
 	--unlock $(cat keys/faucet/faucet-addr.txt) \
 	--rpc \
@@ -18,4 +18,5 @@ docker run -d --network host -v $(pwd)/data:/data -v $(pwd)/keys:/keys -t jwasin
 	--wsaddr '0.0.0.0' \
 	--wsorigins '*' \
 	--password /keys/faucet/faucet-pw.txt \
-	--vm.ewasm="/root/libhera.so,fallback=true,metering=false"
+	--vm.ewasm="/root/libhera.so,metering=false" \
+ --vmodule "rpc=5,core/vm=5"
