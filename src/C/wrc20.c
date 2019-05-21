@@ -56,7 +56,7 @@ void do_balance() {
     */
 
   // get address to check balance of, note: padded to 32 bytes since used as key
-  ethereum_callDataCopy((i32ptr*)addy, 16, 20);
+  ethereum_callDataCopy((i32ptr*)addy, 4 + ( 32 - 20 ), 20);
 
   debug_printMemHex((i32ptr*)addy, 20);
 
@@ -76,17 +76,23 @@ bytes32 recipient_balance[1] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 bytes32 sender_balance[1] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 void do_transfer() {
+  /*
   if (ethereum_getCallDataSize() != 32)
     ethereum_revert(0, 0);
+    */
 
   // get caller
   ethereum_getCaller((i32ptr*)sender);
 
   // get recipient from message at byte 4, length 20
-  ethereum_callDataCopy((i32ptr*)recipient, 4, 20);
+  ethereum_callDataCopy((i32ptr*)recipient, 4+(32-20), 20);
 
   // get amount to transfer from message at byte 24, length 8
-  ethereum_callDataCopy((i32ptr*)value, 24, 8);
+  ethereum_callDataCopy((i32ptr*)value, 4+(64-8), 8);
+
+  debug_printMemHex((i32ptr*)value, 8);
+  debug_printMemHex((i32ptr*)recipient, 20);
+
   *(i64*)value = reverse_bytes(*(i64*)value);
 
   // get balances
@@ -115,6 +121,7 @@ void do_transfer() {
 // global data used in next function, will be allocated to WebAssembly memory
 i32 selector[1] = {0};
 const i32 balance_selector = 0xd770d6e3;
+const i32 transfer_selector = 0xbd9f355d;
 
 void _main(void) {
   if (ethereum_getCallDataSize() < 4)
@@ -124,14 +131,14 @@ void _main(void) {
   ethereum_callDataCopy((i32ptr*)selector, 0, 4); //from byte 0, length 4
 
   debug_printMemHex(selector, 4);
-  debug_printMemHex(&balance_selector, 4);
+  debug_printMemHex(&transfer_selector, 4);
 
   // call function based on selector value
   switch (*selector) {
     case balance_selector:
       do_balance();
       break;
-    case 0x5d359fbd:
+    case transfer_selector:
       do_transfer();
       break;
     default:
