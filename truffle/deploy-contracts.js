@@ -103,36 +103,9 @@ let nonce = web3.eth.getTransactionCount(DEPLOYMENT_ADDRESS).then (nonce => {
 	tx.sign(privateKey)
 	let serializedTx = tx.serialize()
 
-	/*
-	var options = {
-	  url: 'http://localhost:8545',
-	  method: 'POST',
-	  json: {
-	    jsonrpc: "2.0",
-	    method: "eth_sendRawTransaction",
-	    id: 1,
-	    params: [
-	      serializedTx
-	    ]
-	  }
-	};
-
-	request(options, function (error, response, body) {
-	  if (error) {
-	    console.log("error: ")
-	    console.log(error)
-	  }
-
-	  if (!error && response.statusCode == 200) {
-	    console.log(body) // Print the shortened url.
-	  }
-	});
-	*/
-
 	console.log("sending signed transaction...")
 	web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex'))
 		.on('receipt', function(receipt) {
-   web3.eth.getCode(/*receipt.contractAddress*/"0x8013314ea35839f2bb351c1efd2c163964ec3a3e").then(console.log)
 			console.log("got receipt")
 			createTruffleConf(receipt, wasmBytecode);
 		})

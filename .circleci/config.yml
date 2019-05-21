@@ -1,7 +1,7 @@
 defaults:
     create_build_dir: &create_build_dir
         run:
-            name: "create buikld directory"
+            name: "create build directory"
             command: |
                 mkdir build
 
@@ -10,14 +10,8 @@ defaults:
             name: "Build C Example"
             command: |
                 # docker run -v $(pwd)/src/C:/C -t jwasinger/clang-7 bash -c "cd /C && make"
-                # C contracts need remap-exports support in chisel so skip the build for now
+                # C contracts need remap-exports support in chisel so skip building C wrc20 during CI
                 cp src/C/wrc20.wasm build/c.wasm
-
-    chisel: &chisel
-        run:
-            name: "chisel contracts"
-            command: |
-                docker run -v $(pwd)/build:/build -v $(pwd)/chisel/chisel.yml:/chisel.yml -t jwasinger/wasm-chisel run
 
     truffle: &truffle
         run:
@@ -33,5 +27,4 @@ jobs:
             - checkout
             - *create_build_dir
             - *build_c_example
-            # - *chisel
             - *truffle
