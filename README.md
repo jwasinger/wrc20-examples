@@ -54,4 +54,16 @@ function do_transfer() {
 }
 ```
 
-Then simply put it in a directory named after your language and send us a PR.
+## Testing
+
+**Dependencies**: Docker, NodeJS(>10)
+
+Run:
+
+```
+node truffle/deploy-contract.js --wasm /path/to/yourContract.wasm
+cd truffle
+truffle test --network dev
+```
+
+Tests (currently barebones until WRC20 implementations are passing more tests) are located in http://github.com/ewasm/wrc20-examples/truffle/WRC20.template.js
