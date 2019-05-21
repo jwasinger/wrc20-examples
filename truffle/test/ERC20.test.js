@@ -19,12 +19,24 @@ contract('WRC20', function ([_, initialHolder, recipient, anotherAccount]) {
     assert.ok(instanceA, 'Contract should be deployed');
   });
 
-  it('Should be able to "mint" balance for initial owner', () => {
+  it('Should have a prefunded account', () => {
     //assert.ok(instanceA, 'Contract should be deployed');
     //instanceA.balance(WRC20Address);//.should.be.bignumber.equal('0');
     return instanceA.balance.call(PrefundedAddress).then(res => {
       let received = new BN(res, 16)
-      assert(received.eq(PrefundedAmount), util.format("received (%s) != expected prefunded amount(%s) %s", received, PrefundedAmount, res));
+      assert(received.eq(PrefundedAmount), util.format("actual account balance (%s) != expected prefunded amount(%s)", received, PrefundedAmount));
     })
   });
+
+  it('Should be able to send a balance between two accounts', () => {
+    const receivingAddress = '0x85ea6adbac1ca7e16c6c9f59115ce2d370b0b358';
+    const receivedAmount = new BN('1000', 10)
+
+    return instanceA.transfer.call(PrefundedAddress, receivedAmount).then(res => {
+      return instanceA.balance.call(receivingAddress).then(balance => {
+
+        assert((new BN(balance, '16')).eq(receivedAmount), util.format("actual account balance (%s) != expected amount(%s)", new BN(balance, '16'), receivedAmount));
+      })
+    })
+  })
 });
