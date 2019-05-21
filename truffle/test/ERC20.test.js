@@ -6,7 +6,7 @@ const util = require('util')
 const ERC20Mock = artifacts.require('WRC20');
 const WRC20Address = '0x8013314eA35839F2bB351C1eFd2C163964ec3a3E';
 const PrefundedAddress = '0xeD09375DC6B20050d242d1611af97eE4A6E93CAd';
-const PrefundedAmount = new BN('16000000000000000000', 10);
+const PrefundedAmount = new BN('f4240', 16);
 
 contract('WRC20', function ([_, initialHolder, recipient, anotherAccount]) {
   let instanceA;

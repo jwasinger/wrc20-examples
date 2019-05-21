@@ -48,7 +48,7 @@ let wasmDeploymentWrapper = `(module
 	(import "debug" "printMemHex" (func $printMemHex (param i32 i32)))
 	(memory 1) 
  (data (i32.const 0)  "\\ed\\09\\37\\5d\\c6\\b2\\00\\50\\d2\\42\\d1\\61\\1a\\f9\\7e\\e4\\a6\\e9\\3c\\ad\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00")
- (data (i32.const 32) "\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\de\\0b\\6b\\3a\\76\\40\\00\\00")
+ (data (i32.const 32) "\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\00\\0f\\42\\40")
  (data (i32.const 64)  ${formattedWasmBytecode}) 
 (export "memory" (memory 0)) 
 (export "main" (func $main)) 
