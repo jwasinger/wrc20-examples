@@ -1,4 +1,3 @@
-// Basic test cases for ERC20 pulled directly from OpenZeppelin: https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/test/token/ERC20/ERC20.test.js
 const { BN, constants, expectEvent, shouldFail } = require('openzeppelin-test-helpers');
 const { ZERO_ADDRESS } = constants;
 const util = require('util')
@@ -20,15 +19,13 @@ contract('WRC20', function ([_, initialHolder, recipient, anotherAccount]) {
   });
 
   it('Should have a prefunded account', () => {
-    //assert.ok(instanceA, 'Contract should be deployed');
-    //instanceA.balance(WRC20Address);//.should.be.bignumber.equal('0');
     return instanceA.balance.call(PrefundedAddress).then(res => {
       let received = new BN(res, 16)
       assert(received.eq(PrefundedAmount), util.format("actual account balance (%s) != expected prefunded amount(%s)", received, PrefundedAmount));
     })
   });
 
-  // TODO: re-enable this:
+  // TODO: re-enable this once it is passing with the C WRC20 contract
   /*
   it('Should be able to send a balance between two accounts', () => {
     const receivingAddress = '0x85ea6adbac1ca7e16c6c9f59115ce2d370b0b358';
